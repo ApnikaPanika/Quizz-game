@@ -11,15 +11,18 @@
     @update:select-value="formCategory = $event"
   />
 
-  <Question
-    v-else-if="whatToShow === 'questions'"
-    :quizzQuestionId="quizzQuestionId"
-    :quizzQuestion="quizzQuestion"
-    :quizzAnswers="quizzAnswers"
-    :choosenAnswer="choosenAnswer"
-    :answer="answer"
-    :showSingleQuestion="showSingleQuestion"
-  />
+  <div v-else-if="whatToShow === 'questions'">
+    <Question
+      :quizzQuestionId="quizzQuestionId"
+      :quizzQuestion="quizzQuestion"
+      :quizzAnswers="quizzAnswers"
+      :choosenAnswer="choosenAnswer"
+      :answer="answer"
+      :showSingleQuestion="showSingleQuestion"
+    />
+
+    <ProgressBar :procentageBarFill="procentageBarFill" />
+  </div>
 
   <Results
     v-else-if="whatToShow === 'results'"
@@ -37,6 +40,7 @@ import Form from "./components/Form.vue";
 import Results from "./components/Results.vue";
 import Logo from "./components/Logo.vue";
 import Question from "./components/Questions.vue";
+import ProgressBar from "./components/ProgressBar.vue";
 
 type quizzType = {
   id: number;
@@ -50,6 +54,7 @@ export default defineComponent({
     Results,
     Logo,
     Question,
+    ProgressBar,
   },
   data: () => ({
     quizzAllCategories: [] as quizzType[],
@@ -65,6 +70,7 @@ export default defineComponent({
     correctAnswerString: "",
     howManyCorrect: "",
     whatToShow: "start",
+    procentageBarFill: 0,
   }),
   methods: {
     async getQuestions() {
@@ -112,11 +118,12 @@ export default defineComponent({
           this.quizzAnswerId = this.quizzQuestion[0].id.toString();
           this.getAnswers();
           this.submitAnswer();
+          this.fillProgress();
         }
       }
     },
     choosenAnswer(answer: string) {
-      this.answer = answer;
+      this.answer = answer.toString();
     },
     submitAnswer() {
       if (this.answer === "") {
@@ -145,6 +152,11 @@ export default defineComponent({
       this.answerArray = [];
       this.quizzQuestionId = 0;
       this.whatToShow = "start";
+    },
+    fillProgress() {
+      this.procentageBarFill = Math.round(
+        (this.quizzQuestionId / this.quizzAllQuestions.length) * 100
+      );
     },
   },
   async created() {

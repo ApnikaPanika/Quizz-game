@@ -13,7 +13,7 @@
         <button
           class="option__button"
           @click="choosenAnswer(id)"
-          v-bind:class="{ choosen: this.answer === id }"
+          v-bind:class="{ choosen: this.answer === id.toString() }"
         >
           {{ title }}
         </button>
