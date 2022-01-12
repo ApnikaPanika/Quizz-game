@@ -11,29 +11,15 @@
     @update:select-value="formCategory = $event"
   />
 
-  <div class="question__container" v-else-if="whatToShow === 'questions'">
-    <h1>Question {{ quizzQuestionId + 1 }}</h1>
-    <div v-for="{ title, id } in quizzQuestion" :key="id">
-      <h3>{{ title }}</h3>
-    </div>
-    <div class="all__option__container">
-      <div
-        class="one__option__container"
-        v-for="{ title, id } in quizzAnswers"
-        :key="id"
-      >
-        <button
-          class="option__button"
-          @click="choosenAnswer(id)"
-          v-bind:class="{ choosen: this.answer === id }"
-        >
-          {{ title }}
-        </button>
-      </div>
-    </div>
-
-    <Button text="Next question" @click="showSingleQuestion" />
-  </div>
+  <Question
+    v-else-if="whatToShow === 'questions'"
+    :quizzQuestionId="quizzQuestionId"
+    :quizzQuestion="quizzQuestion"
+    :quizzAnswers="quizzAnswers"
+    :choosenAnswer="choosenAnswer"
+    :answer="answer"
+    :showSingleQuestion="showSingleQuestion"
+  />
 
   <Results
     v-else-if="whatToShow === 'results'"
@@ -47,10 +33,10 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import axios from "axios";
-import Button from "./components/Button.vue";
 import Form from "./components/Form.vue";
 import Results from "./components/Results.vue";
 import Logo from "./components/Logo.vue";
+import Question from "./components/Questions.vue";
 
 type quizzType = {
   id: number;
@@ -60,10 +46,10 @@ type quizzType = {
 export default defineComponent({
   name: "Home",
   components: {
-    Button,
     Form,
     Results,
     Logo,
+    Question,
   },
   data: () => ({
     quizzAllCategories: [] as quizzType[],
@@ -177,43 +163,5 @@ export default defineComponent({
 <style lang="scss">
 * {
   font-size: 20px;
-}
-
-.question__container {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-
-.option__button {
-  padding: 5px 20px;
-  background-color: #0c7c59;
-  border: none;
-  border-radius: 6px;
-  color: white;
-  cursor: pointer;
-  font-size: 20px;
-  width: 200px;
-  &:hover {
-    background-color: #b8311c;
-    transition: 0.3s;
-  }
-}
-
-.all__option__container {
-  display: grid;
-  grid-template-columns: 200px 200px;
-  grid-gap: 20px;
-  justify-items: center;
-}
-
-.choosen {
-  background-color: burlywood;
-}
-
-.one__option__container {
-  display: flex;
 }
 </style>
