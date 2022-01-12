@@ -1,40 +1,15 @@
 <template>
-  <div class="logo__container">
-    <img
-      class="logo"
-      src="https://files.cdn.printful.com/upload/og-image-tag/d6/d62afc71a280b36ea96a3702502eacec_l?v=1576220517"
-      alt="Printful logo"
-    />
-  </div>
+  <Logo />
 
-  <form
-    class="form__container"
-    @submit.prevent="formData"
+  <Form
     v-if="whatToShow === 'start'"
-  >
-    <label for="name"> Write your name</label>
-    <input
-      class="form__input__name"
-      type="text"
-      placeholder="Your name"
-      name="name"
-      id="name"
-      v-model="formUsername"
-    />
-
-    <label for="test">Choose your test</label>
-    <select
-      class="form__select"
-      id="test"
-      name="testCategory"
-      v-model="formCategory"
-    >
-      <option v-for="{ title, id } in quizzAllNames" :key="id" :value="id">
-        {{ title }}
-      </option>
-    </select>
-    <Button text="Start" type="submit" />
-  </form>
+    :quizzAllCategories="quizzAllCategories"
+    :submitFunction="formData"
+    :name-value="formUsername"
+    @update:name-value="formUsername = $event"
+    :select-value="formCategory"
+    @update:select-value="formCategory = $event"
+  />
 
   <div class="question__container" v-else-if="whatToShow === 'questions'">
     <h1>Question {{ quizzQuestionId + 1 }}</h1>
@@ -60,20 +35,22 @@
     <Button text="Next question" @click="showSingleQuestion" />
   </div>
 
-  <div class="results__container" v-else-if="whatToShow === 'results'">
-    <h1>Thanks, {{ playerName }} for playing!</h1>
-    <p>
-      You got {{ howManyCorrect }} points, out of
-      {{ quizzAllQuestions.length }} possible!
-    </p>
-    <Button text="Start again" @click="startAgain" />
-  </div>
+  <Results
+    v-else-if="whatToShow === 'results'"
+    :formUsername="formUsername"
+    :howManyCorrect="howManyCorrect"
+    :quizzAllQuestions="quizzAllQuestions"
+    :startAgain="startAgain"
+  />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import axios from "axios";
 import Button from "./components/Button.vue";
+import Form from "./components/Form.vue";
+import Results from "./components/Results.vue";
+import Logo from "./components/Logo.vue";
 
 type quizzType = {
   id: number;
@@ -84,9 +61,12 @@ export default defineComponent({
   name: "Home",
   components: {
     Button,
+    Form,
+    Results,
+    Logo,
   },
   data: () => ({
-    quizzAllNames: [] as quizzType[],
+    quizzAllCategories: [] as quizzType[],
     quizzAllQuestions: [] as quizzType[],
     quizzAnswers: [] as quizzType[],
     quizzQuestion: [] as quizzType[],
@@ -96,7 +76,6 @@ export default defineComponent({
     quizzAnswerId: "",
     formCategory: "",
     formUsername: "",
-    playerName: "",
     correctAnswerString: "",
     howManyCorrect: "",
     whatToShow: "start",
@@ -122,11 +101,13 @@ export default defineComponent({
     },
     async formData() {
       if (this.formCategory === "" || this.formUsername === "") {
+        console.log(this.formUsername);
+        console.log(this.formCategory);
+
         alert("Please fill both fields");
       } else {
         this.whatToShow = "questions";
         await this.getQuestions();
-        this.playerName = this.formUsername;
         this.quizzQuestion = [this.quizzAllQuestions[0]];
         this.quizzAnswerId = this.quizzQuestion[0].id.toString();
         this.getAnswers();
@@ -137,6 +118,7 @@ export default defineComponent({
         alert("Choose an answer");
       } else {
         if (this.quizzQuestionId === this.quizzAllQuestions.length - 1) {
+          this.submitAnswer();
           this.whatToShow = "results";
           this.getCorrectAnswers();
         } else {
@@ -169,7 +151,7 @@ export default defineComponent({
           `https://printful.com/test-quiz.php?action=submit&quizId=${this.formCategory}${this.correctAnswerString}`
         )
         .then((res) => {
-          this.howManyCorrect = res.data.correct;
+          this.howManyCorrect = res.data.correct.toString();
         });
     },
     showCorrect() {
@@ -187,7 +169,7 @@ export default defineComponent({
     await axios
       .get("https://printful.com/test-quiz.php?action=quizzes")
       .then((res) => {
-        this.quizzAllNames = res.data;
+        this.quizzAllCategories = res.data;
       });
   },
 });
@@ -197,40 +179,12 @@ export default defineComponent({
   font-size: 20px;
 }
 
-.logo__container {
-  display: flex;
-  justify-content: center;
-}
-
-.logo {
-  width: 350px;
-}
-
-.form__container,
-.question__container,
-.results__container {
+.question__container {
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
   gap: 10px;
-}
-
-.form__input__name {
-  width: 245px;
-  font-size: 20px;
-  padding: 2px 0px;
-  padding-left: 5px;
-  border: 1px solid black;
-  border-radius: 6px;
-}
-
-.form__select {
-  width: 250px;
-  font-size: 20px;
-  padding: 2px 0px 2px 3px;
-  border: 1px solid black;
-  border-radius: 6px;
 }
 
 .option__button {
