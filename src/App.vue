@@ -87,9 +87,6 @@ export default defineComponent({
     },
     async formData() {
       if (this.formCategory === "" || this.formUsername === "") {
-        console.log(this.formUsername);
-        console.log(this.formCategory);
-
         alert("Please fill both fields");
       } else {
         this.whatToShow = "questions";
@@ -127,7 +124,6 @@ export default defineComponent({
       } else {
         this.answerArray.push(this.answer);
         this.answer = "";
-        console.log(this.answerArray);
       }
     },
     getCorrectAnswers() {
