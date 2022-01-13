@@ -15,10 +15,6 @@ export default defineComponent({
 });
 </script>
 <style lang="scss">
-* {
-  font-size: 20px;
-}
-
 .button {
   padding: 5px 20px;
   background-color: #0c7c59;

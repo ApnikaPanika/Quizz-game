@@ -2,6 +2,7 @@
   <Logo />
 
   <Form
+    class="font__size__20"
     v-if="whatToShow === 'start'"
     :quizzAllCategories="quizzAllCategories"
     :submitFunction="formData"
@@ -13,6 +14,7 @@
 
   <div v-else-if="whatToShow === 'questions'">
     <Question
+      class="font__size__20"
       :quizzQuestionId="quizzQuestionId"
       :quizzQuestion="quizzQuestion"
       :quizzAnswers="quizzAnswers"
@@ -21,10 +23,14 @@
       :showSingleQuestion="showSingleQuestion"
     />
 
-    <ProgressBar :procentageBarFill="procentageBarFill" />
+    <ProgressBar
+      class="font__size__20"
+      :procentageBarFill="procentageBarFill"
+    />
   </div>
 
   <Results
+    class="font__size__20"
     v-else-if="whatToShow === 'results'"
     :formUsername="formUsername"
     :howManyCorrect="howManyCorrect"
@@ -166,3 +172,8 @@ export default defineComponent({
   },
 });
 </script>
+<style lang="scss">
+.font__size__20 {
+  font-size: 20px;
+}
+</style>

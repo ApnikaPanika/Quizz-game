@@ -62,6 +62,7 @@ export default defineComponent({
 }
 
 .form__input__name {
+  font-size: 20px;
   width: 245px;
   padding: 2px 0px;
   padding-left: 5px;
@@ -70,6 +71,7 @@ export default defineComponent({
 }
 
 .form__select {
+  font-size: 20px;
   width: 250px;
   padding: 2px 0px 2px 3px;
   border: 1px solid black;
