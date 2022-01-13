@@ -13,15 +13,12 @@ and
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
 
+If something doesn't work I would suggest to run this command:
 ### Lints and fixes files
 ```
 npm run lint
 ```
-
+or follow the recomendation in your terminal
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
