@@ -17,11 +17,13 @@ npm run serve
 
 
 If something doesn't work I would suggest running this command:
-### Lints and fixes files
+
 ```
 npm run lint
 ```
-or follow the recommendations in your terminal
+or follow the recommendations in your terminal.
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+<br/>
+
+Home you enjoy,
+Toms <img src="https://cdn-icons-png.flaticon.com/512/742/742751.png" width="18" height="18"/>
