@@ -25,5 +25,5 @@ or follow the recommendations in your terminal.
 
 <br/>
 
-Home you enjoy,
+Hope you enjoy,
 Toms <img src="https://cdn-icons-png.flaticon.com/512/742/742751.png" width="18" height="18"/>
