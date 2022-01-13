@@ -6,8 +6,8 @@
     :quizzAllCategories="quizzAllCategories"
     :submitFunction="formData"
     :name-value="formUsername"
-    @update:name-value="formUsername = $event"
     :select-value="formCategory"
+    @update:name-value="formUsername = $event"
     @update:select-value="formCategory = $event"
   />
 
@@ -78,8 +78,8 @@ export default defineComponent({
         .get(
           `https://printful.com/test-quiz.php?action=questions&quizId=${this.formCategory}`
         )
-        .then((res) => {
-          this.quizzAllQuestions = res.data;
+        .then(({ data }) => {
+          this.quizzAllQuestions = data;
         });
     },
     getAnswers() {
@@ -87,8 +87,8 @@ export default defineComponent({
         .get(
           `https://printful.com/test-quiz.php?action=answers&quizId=${this.formCategory}&questionId=${this.quizzAnswerId}`
         )
-        .then((res) => {
-          this.quizzAnswers = res.data;
+        .then(({ data }) => {
+          this.quizzAnswers = data;
         });
     },
     async formData() {
@@ -112,9 +112,7 @@ export default defineComponent({
           this.getCorrectAnswers();
         } else {
           this.quizzQuestionId = this.quizzQuestionId + 1;
-
           this.quizzQuestion = [this.quizzAllQuestions[this.quizzQuestionId]];
-
           this.quizzAnswerId = this.quizzQuestion[0].id.toString();
           this.getAnswers();
           this.submitAnswer();
@@ -139,8 +137,8 @@ export default defineComponent({
         .get(
           `https://printful.com/test-quiz.php?action=submit&quizId=${this.formCategory}${this.correctAnswerString}`
         )
-        .then((res) => {
-          this.howManyCorrect = res.data.correct.toString();
+        .then(({ data }) => {
+          this.howManyCorrect = data.correct.toString();
         });
     },
     showCorrect() {
@@ -162,14 +160,9 @@ export default defineComponent({
   async created() {
     await axios
       .get("https://printful.com/test-quiz.php?action=quizzes")
-      .then((res) => {
-        this.quizzAllCategories = res.data;
+      .then(({ data }) => {
+        this.quizzAllCategories = data;
       });
   },
 });
 </script>
-<style lang="scss">
-* {
-  font-size: 20px;
-}
-</style>
