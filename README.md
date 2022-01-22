@@ -1,6 +1,10 @@
-# Printful homework by Toms Bude
 
-This is printful homework, and the task was to make a functional quiz app.
+
+# Quizz game
+
+![QuizzGameGIF](./public/GIF/QuizzGIF.gif)
+
+This is simple and fun quizz app, made in Vue framework
 
 I made it pretty simple, all the parts of the quiz are in the components map, but the logic is in the App.vue file.
 
